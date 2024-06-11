@@ -17,6 +17,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Configure CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -51,7 +63,8 @@ if (app.Environment.IsDevelopment())
 
 }
 
-
+// Enable CORS
+app.UseCors("AllowAllOrigins");
 
 app.MapPost("/login", async (User loginData, DiplomContext db) =>
 {
@@ -81,6 +94,7 @@ app.MapPost("/register", async (User loginData, DiplomContext db) =>
     return Results.Json(loginData);
 });
 app.UseRouting();
+app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

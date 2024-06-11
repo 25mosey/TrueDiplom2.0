@@ -9,11 +9,13 @@ public partial class DiplomContext : DbContext
 {
     public DiplomContext()
     {
+        //Database.EnsureCreated();
     }
 
     public DiplomContext(DbContextOptions<DiplomContext> options)
         : base(options)
     {
+        //Database.EnsureCreated();
     }
 
     public virtual DbSet<Contract> Contracts { get; set; }
